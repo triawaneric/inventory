@@ -41,6 +41,9 @@ dependencies:
   flutter_svg: ^1.0.3
   google_fonts: ^2.3.1
   animated_splash_screen: ^1.1.0
+  cool_alert: ^1.1.0
+  material_floating_search_bar: ^0.3.7
+
 
 
 dev_dependencies:
@@ -70,7 +73,7 @@ flutter:
       - assets/images/exit.png
       - assets/images/inventory.png
       - assets/images/input.png
-      - assets/
+      - assets/images/placehole.png
       - assets/images/man.png
   #   - images/a_dot_ham.jpeg
 

@@ -60,6 +60,18 @@ class MyDb{
     return raw;
   }
 
+  updateProduct(Product product) async {
+    final db = await database;
+    var response = await db!.update("inventorys", product.toMap(),
+        where: "device_id = ?", whereArgs: [product.deviceId]);
+    return response;
+  }
+
+  deleteProductWithId(int id) async {
+    final db = await database;
+    return db!.delete("inventorys", where: "device_id  = ?", whereArgs: [id]);
+  }
+
 
    Future<List<Product>> getAllProducts() async {
      final db = await database;

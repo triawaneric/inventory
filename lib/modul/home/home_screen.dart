@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen>{
               shrinkWrap: true,
               children: <Widget>[
                 Container(
+                  margin: EdgeInsets.all(5),
                   child: GestureDetector(
                     onTap:(){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventory()));
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.all(5),
                   child: GestureDetector(
                     onTap:(){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ListInventory()));
@@ -64,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.all(5),
                   child: GestureDetector(
                     onTap:(){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventory()));

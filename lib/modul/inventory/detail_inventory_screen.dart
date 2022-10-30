@@ -1,18 +1,28 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory/models/product.dart';
 import 'package:inventory/modul/input/input_qr_screen.dart';
 import 'package:inventory/utils/db.dart';
-import 'package:cool_alert/cool_alert.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-class AddInventory extends StatefulWidget{
+class DetailInventory extends StatefulWidget{
+  DetailInventory({required this.product,super.key});
+
+  Product product;
+
   @override
   State<StatefulWidget> createState() {
-    return _AddInventory();
+    return _DetailInventory();
   }
+
 }
 
-class _AddInventory extends State<AddInventory>{
+class _DetailInventory extends State<DetailInventory>{
+
+  List<Product> slist = [];
+  bool _isEditable = false;
+  List<int> _searchIndexList = [];
 
   TextEditingController deviceName = TextEditingController();
   TextEditingController deviceLocation = TextEditingController();
@@ -24,12 +34,80 @@ class _AddInventory extends State<AddInventory>{
 
 
 
+
+
+
   @override
   void initState() {
-    // MyDb.dbs.open();
+    getdata();
+
+    //set first value
+    deviceId.text = widget.product.deviceId.toString();
+    deviceName.text = widget.product.deviceName;
+    deviceType.text = widget.product.deviceType;
+    deviceLocation.text = widget.product.deviceLocation;
+    _valStatus = widget.product.status;
     super.initState();
   }
 
+  getdata(){
+    Future.delayed(Duration(milliseconds: 500),() async {
+      slist = await MyDb.db.getAllProducts();
+      print('data list :'+slist.length.toString());
+      setState(() { });
+    });
+  }
+
+  Widget _defaultDetailScreen(Size size) {
+
+    return Column(
+      children: [
+        //
+
+
+        //
+
+
+        //
+      ],
+    );
+
+  }
+
+
+  Widget _editableDetailScreen(Size size) {
+
+    return Container(
+        padding: EdgeInsets.all(20),
+
+        width: 300,
+        child:Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+
+        deviceIdTextField(size),
+        const SizedBox(
+          height: 20,
+        ),
+        deviceNameTextField(size),
+        const SizedBox(
+          height: 20,
+        ),
+        deviceTypeTextField(size),
+        const SizedBox(
+          height: 20,
+        ),
+        deviceLocationTextField(size),
+        const SizedBox(
+          height: 20,
+        ),
+        deviceStatusTextField(size),
+
+      ],
+        )
+    );
+
+  }
 
 
 
@@ -38,110 +116,179 @@ class _AddInventory extends State<AddInventory>{
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Add Item"),
-          backgroundColor: Color(0xFF21899C),
-        ),
-        body:SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(30),
-          child: Column(children: [
-
-            deviceIdTextField(size),
-            const SizedBox(
-              height: 25,
-            ),
-            deviceNameTextField(size),
-            const SizedBox(
-              height: 25,
-            ),
-            deviceTypeTextField(size),
-            const SizedBox(
-              height: 25,
-            ),
-            deviceLocationTextField(size),
-            const SizedBox(
-              height: 25,
-            ),
-            deviceStatusTextField(size),
-            const SizedBox(
-              height: 30,
-            ),
-
-
-            submitButton(size)
-
-
-          ],),
-        ),
-        ),
-
-    );
-
-  }
-
-
-  Widget submitButton(Size size) {
-
-
-    return GestureDetector(
-      onTap: () async{
-        //Tap
-
-        Product prod = Product(
-            int.parse(deviceId.text),
-            deviceName.text,
-            deviceType.text,
-            deviceLocation.text,
-            _valStatus!);
-
-
-
-
-        await MyDb.db.addProductToDatabase(prod);
-        deviceId.clear();
-        deviceName.clear();
-        deviceType.clear();
-        deviceLocation.clear();
-        status.clear();
-        CoolAlert.show(
-          context: context,
-          type: CoolAlertType.success,
-          text: 'Transaction completed successfully!',
-          autoCloseDuration: const Duration(seconds: 2),
-        );
-
-
-
-
-
-      },
-      child:Container(
-        alignment: Alignment.center,
-        height: size.height / 13,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: const Color(0xFF21899C),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF4C2E84).withOpacity(0.2),
-              offset: const Offset(0, 15.0),
-              blurRadius: 60.0,
-            ),
-          ],
-        ),
-        child: Text(
-          'Submit',
-          style: GoogleFonts.inter(
-            fontSize: 16.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            height: 1.5,
-          ),
-          textAlign: TextAlign.center,
-        ),
+      appBar: AppBar(
+        backgroundColor: Color(0xFF21899C),
+        title:_isEditable ? Text('Edit Item'):Text('Detail Item'),
       ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: <Widget>[
+          // background image and bottom contents
+          Column(
+            children: <Widget>[
+              Container(
+                height: 200.0,
+                color: Colors.orange,
+                child: Center(
+                  child: Image.asset("assets/images/placehole.png",
+                    height: size.height,
+                    fit: BoxFit.cover,
+                    width: size.width,
+                  )
+                ),
+              ),
+
+            ],
+          ),
+          // Profile image
+          Positioned(
+            top: 150.0, // (background container size) - (circle height / 2)
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              elevation: 10,
+              child: _isEditable ? _editableDetailScreen(size): Container(
+                padding: EdgeInsets.all(20),
+
+                width: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   //
+                   //No
+                   Text('No',style:
+                     TextStyle(
+                         fontWeight: FontWeight.w300,
+                         fontSize: 10
+                     ),
+                   ),
+                   Text(widget.product.deviceId.toString(),
+                     style: TextStyle(
+                         fontSize: 20,
+                         fontWeight: FontWeight.w400
+                     ),
+
+                   ),
+                   SizedBox(height: 20,),
+
+                   //Name
+                   Text('Device Name',style:
+                   TextStyle(
+                       fontWeight: FontWeight.w300,
+                       fontSize: 10
+                   ),
+                   ),
+                   Text(widget.product.deviceName,
+                     style: TextStyle(
+                         fontSize: 20,
+                         fontWeight: FontWeight.w400
+                     ),
+
+                   ),
+
+                   SizedBox(height: 20,),
+
+                   Text('Device Type',style:
+                   TextStyle(
+                       fontWeight: FontWeight.w300,
+                       fontSize: 10
+                   ),
+                   ),
+                   Text(widget.product.deviceType,
+                     style: TextStyle(
+                         fontSize: 20,
+                         fontWeight: FontWeight.w400
+                     ),
+
+                   ),
+
+
+                   SizedBox(height: 20,),
+
+                   Text('Device Location ',style:
+                   TextStyle(
+                       fontWeight: FontWeight.w300,
+                       fontSize: 10
+                   ),
+                   ),
+                   Text(widget.product.deviceLocation,
+                     style: TextStyle(
+                         fontSize: 20,
+                         fontWeight: FontWeight.w400
+                     ),
+
+                   ),
+
+
+                   SizedBox(height: 20,),
+
+                   Text('Device Status ',style:
+                   TextStyle(
+                       fontWeight: FontWeight.w300,
+                       fontSize: 10
+                   ),
+                   ),
+                   Text(widget.product.status,
+                     style: TextStyle(
+                         fontSize: 20,
+                         fontWeight: FontWeight.w400
+                     ),
+
+                   ),
+                 ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+
+      floatingActionButton: FloatingActionButton (
+        onPressed: () async {
+
+          if(_isEditable == true ) {
+
+            Product prod = Product(
+                int.parse(deviceId.text),
+                deviceName.text,
+                deviceType.text,
+                deviceLocation.text,
+                _valStatus!);
+            await MyDb.db.updateProduct(prod);
+            setState(() {
+              _isEditable = false;
+              print(" _isEditable"+ _isEditable.toString());
+            });
+            CoolAlert.show(
+              context: context,
+              type: CoolAlertType.success,
+              text: 'Transaction completed successfully!',
+              autoCloseDuration: const Duration(seconds: 2),
+            );
+            Navigator.of(context).pop();
+
+          }else{
+            setState(() {
+              _isEditable = true;
+              print(" _isEditable"+ _isEditable.toString());
+            });
+          }
+
+
+
+
+
+        },
+
+        child: _isEditable ? Icon( Icons.check) : Icon( Icons.edit),
+        backgroundColor: Color(0xFFFE9879),
+      ),
+
+
     );
+
+
   }
 
 
@@ -150,6 +297,7 @@ class _AddInventory extends State<AddInventory>{
     return SizedBox(
       height: size.height / 10,
       child: TextFormField(
+
         controller: deviceId,
         style: GoogleFonts.inter(
           fontSize: 16.0,
@@ -441,7 +589,6 @@ class _AddInventory extends State<AddInventory>{
       ),
     );
   }
-
 
 
 

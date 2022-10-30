@@ -5,14 +5,18 @@ import 'package:inventory/modul/input/input_qr_screen.dart';
 import 'package:inventory/utils/db.dart';
 import 'package:cool_alert/cool_alert.dart';
 
-class AddInventory extends StatefulWidget{
+class PreviewAddInventory extends StatefulWidget{
+  PreviewAddInventory({required this.product,super.key});
+
+  Product product;
+
   @override
   State<StatefulWidget> createState() {
-    return _AddInventory();
+    return _PreviewAddInventory();
   }
 }
 
-class _AddInventory extends State<AddInventory>{
+class _PreviewAddInventory extends State<PreviewAddInventory>{
 
   TextEditingController deviceName = TextEditingController();
   TextEditingController deviceLocation = TextEditingController();
@@ -26,7 +30,13 @@ class _AddInventory extends State<AddInventory>{
 
   @override
   void initState() {
-    // MyDb.dbs.open();
+
+    //set first value
+    deviceId.text = widget.product.deviceId.toString();
+    deviceName.text = widget.product.deviceName;
+    deviceType.text = widget.product.deviceType;
+    deviceLocation.text = widget.product.deviceLocation;
+    _valStatus = widget.product.status;
     super.initState();
   }
 
@@ -39,7 +49,7 @@ class _AddInventory extends State<AddInventory>{
     final size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add Item"),
+          title: Text("Add Item QR"),
           backgroundColor: Color(0xFF21899C),
         ),
         body:SingleChildScrollView(
