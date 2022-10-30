@@ -260,12 +260,12 @@ class _DetailInventory extends State<DetailInventory>{
               _isEditable = false;
               print(" _isEditable"+ _isEditable.toString());
             });
-            CoolAlert.show(
-              context: context,
-              type: CoolAlertType.success,
-              text: 'Transaction completed successfully!',
-              autoCloseDuration: const Duration(seconds: 2),
-            );
+            // CoolAlert.show(
+            //   context: context,
+            //   type: CoolAlertType.success,
+            //   text: 'Transaction completed successfully!',
+            //   autoCloseDuration: const Duration(seconds: 2),
+            // );
             Navigator.of(context).pop();
 
           }else{

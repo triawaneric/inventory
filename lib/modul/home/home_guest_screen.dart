@@ -5,17 +5,19 @@ import 'package:inventory/modul/inventory/admin/list_inventory_screen.dart';
 import 'package:inventory/modul/login/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatefulWidget{
-  const HomeScreen({super.key});
+import '../inventory/guest/list_inventory_screen.dart';
+
+class HomeGuestScreen extends StatefulWidget{
+  const HomeGuestScreen({super.key});
 
   @override
-  _HomeScreenState createState() {
-    return _HomeScreenState();
+  _HomeGuestScreenState createState() {
+    return _HomeGuestScreenState();
   }
 
 }
 
-class _HomeScreenState extends State<HomeScreen>{
+class _HomeGuestScreenState extends State<HomeGuestScreen>{
   String role ='';
   bool isAdmin = false;
 
@@ -98,28 +100,13 @@ class _HomeScreenState extends State<HomeScreen>{
 
 
 
-                  Visibility(
-                    // visible: isAdmin,
-                    child:  Container(
-                        margin: EdgeInsets.all(5),
-                        child: GestureDetector(
-                          onTap:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventory()));
-                          },
-                          child:  _customCard(
-                              imageUrl: "input.png",
-                              item: "Input"
-                          ),
-                        ),
-                      ),
-                  ),
 
 
                 Container(
                   margin: EdgeInsets.all(5),
                   child: GestureDetector(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ListInventory()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ListGuestInventory()));
                     },
                     child:  _customCard(
                         imageUrl: "inventory.png",
@@ -145,27 +132,6 @@ class _HomeScreenState extends State<HomeScreen>{
         ],
       )
       )
-
-
-          // Column(
-          //   children: <Widget>[
-          //     //header
-          //     // Container(
-          //     //   width: double.infinity,
-          //     //   height: MediaQuery.of(context).size.height*2/8,
-          //     //   decoration: const BoxDecoration(
-          //     //     gradient: LinearGradient(
-          //     //       begin: Alignment.topCenter,
-          //     //       end: Alignment.bottomCenter,
-          //     //       colors: [Color(0xFF21899C), Color(0xff0fb2ea)],
-          //     //     ),
-          //     //   ),
-          //     // ),
-          //
-          //
-          //
-          //   ],
-          // ),
     );
   }
 

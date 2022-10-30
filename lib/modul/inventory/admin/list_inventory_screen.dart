@@ -280,7 +280,10 @@ class _ListInventory extends State<ListInventory>{
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventoryQR()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventoryQR())).then((value) => setState(() {
+            getdata();
+          }));
+
         },
 
         child: Icon( Icons.qr_code),

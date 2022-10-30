@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:inventory/modul/home/home_screen.dart';
 import 'package:inventory/modul/login/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -28,7 +30,46 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+
+    super.dispose();
+  }
+
+
+
+  checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    var checkToken = prefs.getString('access_token') ?? 0;
+    print("Token "+checkToken.toString());
+    if (checkToken != 0) {
+
+      await prefs.setBool("isLoggedIn", true);
+      if (mounted) {
+        Timer(const Duration(seconds: 6), () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => HomeScreen()));
+        });
+      }
+
+
+
+
+
+    } else {
+      if (mounted) {
+        Timer(const Duration(seconds: 3), () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) =>  LoginScreen()));
+        });
+      }
+
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    checkLogin();
     return Scaffold(
       body: Center(
         child: Column(

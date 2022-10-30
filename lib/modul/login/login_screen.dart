@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory/modul/home/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home/home_guest_screen.dart';
 
 class LoginScreen extends StatefulWidget{
   @override
@@ -34,6 +37,17 @@ class _LoginScreenState extends State<LoginScreen>{
         ),
       ),
     );
+  }
+
+
+  Future<void> _setSharedPref(String username,String role) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', username);
+    await prefs.setString('role',role);
+    await prefs.setBool("isLoggedIn", true);
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   Widget buildCard(Size size) {
@@ -366,10 +380,23 @@ class _LoginScreenState extends State<LoginScreen>{
     return GestureDetector(
       onTap: (){
         //Tap
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  HomeScreen()),
-        );
+
+        if(emailController.text.contains("admin@gmail.com") && passController.text.contains('admin')){
+          const snackBar =
+          SnackBar(content: Text('Login Successful'));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+          _setSharedPref('Admin','admin');
+        }else{
+          const snackBar =
+          SnackBar(content: Text('Login Failed'));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+        }
+
+
+
+
       },
         child:Container(
       alignment: Alignment.center,
@@ -406,10 +433,8 @@ class _LoginScreenState extends State<LoginScreen>{
     return GestureDetector(
       onTap: (){
         //Tap
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  HomeScreen()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeGuestScreen()));
       },
       child:Container(
         alignment: Alignment.center,
