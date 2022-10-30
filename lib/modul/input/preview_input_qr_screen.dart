@@ -36,7 +36,7 @@ class _PreviewAddInventory extends State<PreviewAddInventory>{
     deviceName.text = widget.product.deviceName;
     deviceType.text = widget.product.deviceType;
     deviceLocation.text = widget.product.deviceLocation;
-    _valStatus = widget.product.status;
+    // _valStatus = widget.product.status;
     super.initState();
   }
 
@@ -114,6 +114,7 @@ class _PreviewAddInventory extends State<PreviewAddInventory>{
         deviceType.clear();
         deviceLocation.clear();
         status.clear();
+        Navigator.of(context).pop();
         CoolAlert.show(
           context: context,
           type: CoolAlertType.success,

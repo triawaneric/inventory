@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:inventory/modul/input/input_manual_screen.dart';
 import 'package:inventory/modul/inventory/list_inventory_screen.dart';
+import 'package:inventory/modul/login/login_screen.dart';
 
 class HomeScreen extends StatefulWidget{
   const HomeScreen({super.key});
@@ -23,6 +25,26 @@ class _HomeScreenState extends State<HomeScreen>{
           Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height*2/8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //Text
+                    SizedBox(height: 30,),
+
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                      child:  Text('Dashboard',
+                        style: GoogleFonts.inter(
+                          fontSize: 32.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          height: 1.67,
+                        ),
+                    ),
+                   
+                    )
+                  ],
+                ),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -69,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   margin: EdgeInsets.all(5),
                   child: GestureDetector(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddInventory()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                     },
                     child:  _customCard(
                         imageUrl: "exit.png",

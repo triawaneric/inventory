@@ -131,7 +131,13 @@ class _ListInventory extends State<ListInventory>{
                 key: Key(index.toString()),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailInventory(product:item,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailInventory(product:item,))).then((value) {
+                      setState(() {
+                        // refresh state
+                        getdata();
+                      });
+                    });
+
                   }
 
                     ,
